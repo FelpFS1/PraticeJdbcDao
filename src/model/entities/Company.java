@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Company implements Serializable {
-    private int id;
+    private Integer id;
     private String name;
 
     public Company() {
     }
 
-    public Company(int id, String name) {
+    public Company(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -23,11 +23,11 @@ public class Company implements Serializable {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
