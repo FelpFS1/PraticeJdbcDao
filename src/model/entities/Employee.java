@@ -4,22 +4,24 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Employee implements Serializable {
-    private int id;
+    private Integer id;
     private String name;
-    private int age;
+    private Integer age;
     private double salary;
     private Company company;
 
     public Employee() {
     }
 
-    public Employee(String name, int id, int age, Company company, double salary) {
+    public Employee(String name, Integer id, int age, Company company, double salary) {
         this.name = name;
         this.id = id;
         this.age = age;
         this.company = company;
         this.salary = salary;
     }
+
+
 
     public int getId() {
         return id;

@@ -1,5 +1,6 @@
 package model.dao.impl;
 
+import db.DB;
 import db.DbException;
 import model.dao.EmployeeDao;
 import model.entities.Company;
@@ -21,6 +22,28 @@ public class EmployeeDaoJDBC implements EmployeeDao {
 
     @Override
     public void insert(Employee employee) {
+        try{
+            preparedStatement = conn.prepareStatement("INSERT INTO employee " +
+                    "(employee_name,employee_age,employee_salary,company_id) " +
+                    "VALUES (?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1,employee.getName());
+            preparedStatement.setInt(2,employee.getAge());
+            preparedStatement.setDouble(3,employee.getSalary());
+            preparedStatement.setInt(4,employee.getCompany().getId());
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if(rowsAffected > 0){
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                if(resultSet.next()){
+                    employee.setId(resultSet.getInt(1));
+                }
+            }
+
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
 
     }
 
@@ -47,6 +70,7 @@ public class EmployeeDaoJDBC implements EmployeeDao {
 
             if(resultSet.next()){
                 Company company = new Company(resultSet.getInt("company_id"),resultSet.getString("compName"));
+
                 Employee employee = new Employee(resultSet.getString("employee_name"),
                         id,resultSet.getInt("employee_age"),company,resultSet.getDouble("employee_salary"));
                 return  employee;
@@ -54,6 +78,8 @@ public class EmployeeDaoJDBC implements EmployeeDao {
 
         }catch (SQLException e){
             throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(preparedStatement);
         }
         return null;
     }
