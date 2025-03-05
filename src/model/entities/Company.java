@@ -45,9 +45,6 @@ public class Company implements Serializable {
 
     @Override
     public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "id: " + getId() + " - name: " + getName();
     }
 }

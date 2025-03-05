@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyDaoJDBC implements CompanyDao {
@@ -97,7 +98,20 @@ public class CompanyDaoJDBC implements CompanyDao {
 
     @Override
     public List<Company> findAll() {
-        return List.of();
+        List<Company> companies = new ArrayList<>();
+
+        try{
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM company");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                companies.add(new Company(resultSet.getInt("company_id"),resultSet.getString("company_name")));
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return companies;
     }
 
 }
