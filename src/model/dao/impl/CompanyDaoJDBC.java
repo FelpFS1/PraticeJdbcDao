@@ -24,8 +24,7 @@ public class CompanyDaoJDBC implements CompanyDao {
                     "(company_name) " +
                     "VALUES (?)",PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1,company.getName());
-
-
+            
             int rowAffected = ps.executeUpdate();
             if(rowAffected > 0){
                 ResultSet rs = ps.getGeneratedKeys();
@@ -46,6 +45,22 @@ public class CompanyDaoJDBC implements CompanyDao {
 
     @Override
     public void update(Company company) {
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE company SET " +
+                    "company_name = ? WHERE company_id = ?",PreparedStatement.RETURN_GENERATED_KEYS);
+
+            ps.setString(1,company.getName());
+            ps.setInt(2,company.getId());
+            int rowsAffected = ps.executeUpdate();
+
+            if(rowsAffected > 0){
+                company.setId(company.getId());
+                company.setName(company.getName());
+            }
+
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
 
     }
 
