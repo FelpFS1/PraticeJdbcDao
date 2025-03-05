@@ -5,15 +5,19 @@ import model.entities.Company;
 
 public class Main {
     public static void main(String[] args) {
+        CompanyDao companyDao = DaoFactory.createCompanyDao(DB.getConnection());
 
         /* <------ INSERT Company --------> */
-//        Company company = new Company(null,"BYD");
-       CompanyDao companyDao = DaoFactory.createCompanyDao(DB.getConnection());
-//        companyDao.insert(company);
+        Company company = new Company(null,"FORD");
+        companyDao.insert(company);
 
-        Company company2 = new Company(2,"BYD");
+        /* <------ UPDATE Company --------> */
+        Company company2 = new Company(8,"BYD");
         companyDao.update(company2);
 
+        /* <------ FINDBYID Company --------> */
 
+        Company findCompany = companyDao.findById(company.getId());
+        System.out.println(findCompany);
     }
 }

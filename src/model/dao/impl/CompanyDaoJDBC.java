@@ -60,6 +60,8 @@ public class CompanyDaoJDBC implements CompanyDao {
 
         }catch (SQLException e){
             throw new DbException(e.getMessage());
+        }finally {
+
         }
 
     }
@@ -71,6 +73,25 @@ public class CompanyDaoJDBC implements CompanyDao {
 
     @Override
     public Company findById(Integer id) {
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM company " +
+                    "WHERE company_id = ?");
+            ps.setInt(1,id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()){
+                Company company = new Company();
+                company.setId(rs.getInt("company_id"));
+                company.setName(rs.getString("company_name"));
+                return company;
+            }
+
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
         return null;
     }
 
