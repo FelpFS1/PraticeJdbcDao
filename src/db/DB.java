@@ -3,6 +3,7 @@ package db;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -42,6 +43,14 @@ public class DB {
             return properties;
 
         } catch (Exception e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
+    public static void closeStatement(PreparedStatement statement){
+        try {
+            statement.close();
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
     }

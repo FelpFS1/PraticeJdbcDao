@@ -1,5 +1,6 @@
 package model.dao.impl;
 
+import db.DB;
 import db.DbException;
 import model.dao.CompanyDao;
 import model.entities.Company;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class CompanyDaoJDBC implements CompanyDao {
     private Connection conn;
+    PreparedStatement preparedStatement = null;
 
     public CompanyDaoJDBC(Connection conn){
         this.conn = conn;
@@ -21,14 +23,14 @@ public class CompanyDaoJDBC implements CompanyDao {
     @Override
     public void insert(Company company) {
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO company " +
+            preparedStatement = conn.prepareStatement("INSERT INTO company " +
                     "(company_name) " +
                     "VALUES (?)",PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1,company.getName());
+            preparedStatement.setString(1,company.getName());
             
-            int rowAffected = ps.executeUpdate();
+            int rowAffected = preparedStatement.executeUpdate();
             if(rowAffected > 0){
-                ResultSet rs = ps.getGeneratedKeys();
+                ResultSet rs = preparedStatement.getGeneratedKeys();
                 while (rs.next()){
                     int id = rs.getInt(1);
                     company.setId(id);
@@ -40,6 +42,7 @@ public class CompanyDaoJDBC implements CompanyDao {
         }catch (SQLException e){
             throw new DbException(e.getMessage());
         }finally {
+            DB.closeStatement(preparedStatement);
         }
 
     }
@@ -47,12 +50,12 @@ public class CompanyDaoJDBC implements CompanyDao {
     @Override
     public void update(Company company) {
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE company SET " +
+            preparedStatement = conn.prepareStatement("UPDATE company SET " +
                     "company_name = ? WHERE company_id = ?",PreparedStatement.RETURN_GENERATED_KEYS);
 
-            ps.setString(1,company.getName());
-            ps.setInt(2,company.getId());
-            int rowsAffected = ps.executeUpdate();
+            preparedStatement.setString(1,company.getName());
+            preparedStatement.setInt(2,company.getId());
+            int rowsAffected = preparedStatement.executeUpdate();
 
             if(rowsAffected > 0){
                 company.setId(company.getId());
@@ -62,7 +65,7 @@ public class CompanyDaoJDBC implements CompanyDao {
         }catch (SQLException e){
             throw new DbException(e.getMessage());
         }finally {
-
+            DB.closeStatement(preparedStatement);
         }
 
     }
@@ -70,13 +73,15 @@ public class CompanyDaoJDBC implements CompanyDao {
     @Override
     public void deleteById(Integer id) {
         try{
-            PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM company " +
+            preparedStatement = conn.prepareStatement("DELETE FROM company " +
                     "WHERE company_id = ?");
             preparedStatement.setInt(1,id);
             preparedStatement.execute();
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(preparedStatement);
         }
     }
 
@@ -84,11 +89,11 @@ public class CompanyDaoJDBC implements CompanyDao {
     public Company findById(Integer id) {
 
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM company " +
+            preparedStatement = conn.prepareStatement("SELECT * FROM company " +
                     "WHERE company_id = ?");
-            ps.setInt(1,id);
+            preparedStatement.setInt(1,id);
 
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()){
                 Company company = new Company();
@@ -100,6 +105,8 @@ public class CompanyDaoJDBC implements CompanyDao {
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(preparedStatement);
         }
         return null;
     }
@@ -109,7 +116,7 @@ public class CompanyDaoJDBC implements CompanyDao {
         List<Company> companies = new ArrayList<>();
 
         try{
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM company");
+            preparedStatement= conn.prepareStatement("SELECT * FROM company");
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -118,6 +125,8 @@ public class CompanyDaoJDBC implements CompanyDao {
             }
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(preparedStatement);
         }
         return companies;
     }
