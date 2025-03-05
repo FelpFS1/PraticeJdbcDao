@@ -26,5 +26,11 @@ public class Main {
 
         List<Company> companyList = companyDao.findAll();
         companyList.forEach(System.out::println);
+        System.out.println("--------------------------------------------------------");
+
+        /* <------ DELETE Company --------> */
+        companyDao.deleteById(10);
+        List<Company> compListOneDeleted = companyDao.findAll();
+        compListOneDeleted.forEach(System.out::println);
     }
 }

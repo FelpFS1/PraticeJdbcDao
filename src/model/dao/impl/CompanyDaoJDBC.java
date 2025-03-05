@@ -69,7 +69,15 @@ public class CompanyDaoJDBC implements CompanyDao {
 
     @Override
     public void deleteById(Integer id) {
+        try{
+            PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM company " +
+                    "WHERE company_id = ?");
+            preparedStatement.setInt(1,id);
+            preparedStatement.execute();
 
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
