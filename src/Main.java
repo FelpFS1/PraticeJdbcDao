@@ -1,13 +1,16 @@
 import db.DB;
 import model.dao.CompanyDao;
 import model.dao.DaoFactory;
+import model.dao.EmployeeDao;
 import model.entities.Company;
+import model.entities.Employee;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         CompanyDao companyDao = DaoFactory.createCompanyDao(DB.getConnection());
+        EmployeeDao employeeDao = DaoFactory.createEmployeeDao(DB.getConnection());
 
         /* <------ INSERT Company --------> */
 //        Company company = new Company(null,"Magazine");
@@ -24,13 +27,18 @@ public class Main {
 
         /* <------ FINDALL Company --------> */
 
-        List<Company> companyList = companyDao.findAll();
-        companyList.forEach(System.out::println);
-        System.out.println("--------------------------------------------------------");
+//        List<Company> companyList = companyDao.findAll();
+//        companyList.forEach(System.out::println);
+//        System.out.println("--------------------------------------------------------");
+//
+//        /* <------ DELETE Company --------> */
+//        companyDao.deleteById(10);
+//        List<Company> compListOneDeleted = companyDao.findAll();
+//        compListOneDeleted.forEach(System.out::println);
 
-        /* <------ DELETE Company --------> */
-        companyDao.deleteById(10);
-        List<Company> compListOneDeleted = companyDao.findAll();
-        compListOneDeleted.forEach(System.out::println);
-    }
+        /* <------ FIND EMPLOYEE BY ID --------> */
+
+        Employee employee = employeeDao.findById(4);
+        System.out.println(employee);
+   }
 }
