@@ -49,6 +49,25 @@ public class EmployeeDaoJDBC implements EmployeeDao {
 
     @Override
     public void update(Employee employee) {
+        try {
+            preparedStatement = conn.prepareStatement("UPDATE employee SET " +
+                    "employee_name = ?, employee_age = ?, employee_salary = ?, company_id = ? " +
+                    "WHERE employee_id = ?",PreparedStatement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setString(1,employee.getName());
+            preparedStatement.setInt(2,employee.getAge());
+            preparedStatement.setDouble(3,employee.getSalary());
+            preparedStatement.setInt(4,employee.getCompany().getId());
+            preparedStatement.setInt(5,employee.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if(rowsAffected > 0){
+                System.out.println("Done! Updated with sucess!");
+            }
+
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
 
     }
 
