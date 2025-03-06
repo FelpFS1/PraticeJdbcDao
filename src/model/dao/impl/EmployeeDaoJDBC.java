@@ -54,6 +54,20 @@ public class EmployeeDaoJDBC implements EmployeeDao {
 
     @Override
     public void deleteById(Integer id) {
+        try{
+            preparedStatement = conn.prepareStatement("DELETE FROM employee " +
+                                                          "WHERE employee_id = ?");
+
+            preparedStatement.setInt(1,id);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if(rowsAffected > 0){
+                System.out.println("Done! Deleted with sucess!");
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(preparedStatement);
+        }
 
     }
 

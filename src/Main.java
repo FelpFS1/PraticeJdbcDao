@@ -13,8 +13,8 @@ public class Main {
         EmployeeDao employeeDao = DaoFactory.createEmployeeDao(DB.getConnection());
 
         /* <------ INSERT Company --------> */
-        Company company = new Company(null,"Magazine lu");
-        companyDao.insert(company);
+//        Company company = new Company(null,"Magazine lu");
+//        companyDao.insert(company);
 
         /* <------ UPDATE Company --------> */
 //        Company company2 = new Company(8,"BYD");
@@ -22,7 +22,7 @@ public class Main {
 
         /* <------ FINDBYID Company --------> */
 
-          Company findCompany = companyDao.findById(company.getId());
+//          Company findCompany = companyDao.findById(company.getId());
 //        System.out.println(findCompany);
 
         /* <------ FINDALL Company --------> */
@@ -38,12 +38,16 @@ public class Main {
 
         /* <------ INSERT Employee --------> */
 
-        Employee employee1 = new Employee("Matheus",null,42,findCompany,5000);
-        employeeDao.insert(employee1);
+//        Employee employee1 = new Employee("Matheus",null,42,findCompany,5000);
+//        employeeDao.insert(employee1);
 
         /* <------ FIND Employee BY ID --------> */
 
-        Employee employee = employeeDao.findById(employee1.getId());
-        System.out.println(employee);
+//        Employee employee = employeeDao.findById(employee1.getId());
+//        System.out.println(employee);
+
+        /* <------ DELETE Employee BY ID --------> */
+
+        employeeDao.deleteById(9);
    }
 }
