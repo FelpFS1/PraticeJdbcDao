@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDaoJDBC implements EmployeeDao {
@@ -119,6 +120,26 @@ public class EmployeeDaoJDBC implements EmployeeDao {
 
     @Override
     public List<Employee> findAll() {
-        return List.of();
+        List<Employee> employees = new ArrayList<>();
+
+        try{
+            preparedStatement = conn.prepareStatement("SELECT employee.*,company.company_name as compName " +
+                    "FROM employee INNER JOIN company " +
+                    "ON employee.company_id = company.company_id");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                Company company = new Company(resultSet.getInt("company_id"),resultSet.getString("compName"));
+                Employee employee = new Employee(resultSet.getString("employee_name"),resultSet.getInt("employee_id"),
+                        resultSet.getInt("employee_age"),company,resultSet.getDouble("employee_salary"));
+
+                employees.add(employee);
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+
+        return employees;
     }
 }

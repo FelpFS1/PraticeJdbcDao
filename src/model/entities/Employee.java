@@ -77,12 +77,13 @@ public class Employee implements Serializable {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", salary=" + salary +
-                ", company=" + company +
-                '}';
+        return "id: " + getId() + "\n" + "Nome: " + getName() + "\n" +
+                "Idade: " + getAge() + "\n" +
+                "Salário: " + getSalary() + "\n" +
+                "Dados da empresa: " + "\n" +
+                "id: " + getCompany().getId() + "\n" +
+                "Nome: " + getCompany().getName() + "\n" +
+                "---------------------------------------------------------"
+                ;
     }
 }

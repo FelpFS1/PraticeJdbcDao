@@ -22,8 +22,8 @@ public class Main {
 
         /* <------ FINDBYID Company --------> */
 
-          Company findCompany = companyDao.findById(11);
-        System.out.println(findCompany);
+//          Company findCompany = companyDao.findById(11);
+//        System.out.println(findCompany);
 
         /* <------ FINDALL Company --------> */
 
@@ -42,20 +42,28 @@ public class Main {
 //        employeeDao.insert(employee1);
 
         /* <------ FIND Employee BY ID --------> */
-
-        Employee employee = employeeDao.findById(4);
-        System.out.println(employee);
+//
+//        Employee employee = employeeDao.findById(4);
+//        System.out.println(employee);
 
         /* <------ DELETE Employee BY ID --------> */
 
-        employeeDao.deleteById(9);
+//        employeeDao.deleteById(9);
 
 
         /* <------ UPDATE Employee  --------> */
 
-        employeeDao.update(new Employee("Viegas",4,75,findCompany,3000));
+//        employeeDao.update(new Employee("Viegas",4,75,findCompany,3000));
+//
+//        Employee updatedEmployee = employeeDao.findById(4);
+//        System.out.println(updatedEmployee);
 
-        Employee updatedEmployee = employeeDao.findById(4);
-        System.out.println(updatedEmployee);
+        /* <------ FINDALL Employee  --------> */
+
+        List<Employee> employees = employeeDao.findAll();
+
+        for (Employee employee : employees) {
+            System.out.println(employee);
+        }
    }
 }
